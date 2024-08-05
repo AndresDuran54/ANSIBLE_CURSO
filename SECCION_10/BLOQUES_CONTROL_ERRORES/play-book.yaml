@@ -1,0 +1,24 @@
+---
+### BLOQUES ###
+###
+### Permiten la agrupación de tareas
+### RESCUE --> Tareas a ejecutar cuando falla un bloque
+- name: Control de errores en bloques
+  hosts: ubuntu1
+
+  tasks:
+    - name: Obtener el contenido de un archivo que no existe
+      block:
+        - name: Tratar de obtener información de un fichero
+          ansible.builtin.shell:
+            cmd: ls /etc/not_existe.txt
+
+      rescue:
+        - name: Se ejecuta cuando se obtiene un error
+          ansible.builtin.debug:
+            msg: "Ocurrio un error"
+
+      always:
+        - name: Siempre se ejecuta
+          ansible.builtin.debug:
+            msg: "Siempre me ejecuto"

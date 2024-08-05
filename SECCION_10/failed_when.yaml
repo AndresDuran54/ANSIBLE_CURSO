@@ -1,0 +1,14 @@
+---
+- name: Control de errores. Failed When
+  hosts: ubuntu
+
+  tasks:
+    - name: Localizar directorio tempporal
+      ansible.builtin.command:
+        cmd: ls -l /temporal
+      register: salida
+      failed_when: salida.rc == 0
+
+    - name: Visualizar salida
+      ansible.builtin.debug:
+        var: salida

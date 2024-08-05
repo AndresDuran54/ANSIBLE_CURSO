@@ -1,0 +1,21 @@
+all:
+  hosts:
+    ubuntu1:
+      puerto: 9000
+      entorno: Desarrollo
+  children:
+    debian:
+      hosts:
+        debian1:
+        debian2:
+      vars:
+        ansible_user: pepe
+    ubuntu:
+      hosts:
+        ubuntu1:
+      vars:
+        ansible_user: pepe
+    servidores_de_datos:
+      hosts:
+        mysql:
+

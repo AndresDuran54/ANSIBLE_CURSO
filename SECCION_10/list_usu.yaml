@@ -1,0 +1,5 @@
+usuarios:
+  - name: andres
+    password: andres
+  - name: angel
+    password: angel

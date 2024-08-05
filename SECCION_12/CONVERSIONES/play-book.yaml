@@ -1,0 +1,21 @@
+---
+- name: Ejemplos para obtener el tipo de dato de una variable
+  hosts: all
+
+  tasks:
+    - name: Iterar todas las variables y obtener su tipo
+      ansible.builtin.debug:
+        msg: "El tipo de '{{ item }}' es {{ item | type_debug }} y esta es su conversión a string {{ item | string }}"
+      loop:
+        - "Andres"
+        - 1
+        - 1.1
+        - p1: Duran
+          p2: Ccota
+        - [1, 2, 3]
+      when: "item | type_debug == 'float' or item | type_debug == 'int' or item | type_debug == 'dict'"
+
+    - name: Visualizar versión de la distribución
+      ansible.builtin.debug:
+        msg: "{{ ansible_facts['distribution_version'] }}"
+      when: ansible_distribution_version | float > 10

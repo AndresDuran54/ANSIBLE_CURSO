@@ -1,0 +1,4 @@
+---
+# vars file for desarrollo
+software: mysql-server
+servicio: mysql.service

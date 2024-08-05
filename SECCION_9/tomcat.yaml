@@ -1,0 +1,89 @@
+---
+# 1- Crear usuario y grupo
+# 2- Instalar JAVA
+# 3- Crear directorio para Tomcat
+# 4- Descargar y descomprimir el software
+# 5- Asociar el usurio y el grupo
+# 6- Crear un fichero para el arranque con SYSTEMD
+# 7- Arrancar el servicio
+
+- name: Intalar Tomcat 10
+  hosts: servidores_de_aplicaciones
+  vars:
+    url_descarga: https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.7/bin/apache-tomcat-10.1.7.tar.gz
+    
+  tasks:
+     
+    - name: Crear usuario
+      user:
+        name: tomcat
+ 
+    - name: Crear grupo
+      group:
+        name: tomcat
+ 
+    - name: Instalar JAVA
+      apt:
+        name: default-jdk
+        state: present
+        update_cahge: true
+  
+    - name: Crea un directorio para guardar TOMCAT
+      file:
+        path: /opt/tomcat
+        owner: tomcat
+        group: tomcat
+        mode: 755
+        recurse: yes
+ 
+    - name: descargamos y descomprimimos 
+      unarchive:
+        src: "{{url_descarga}}"
+        dest: /opt/tomcat
+        remote_src: yes
+        extra_opts: [--strip-components=1]
+ 
+    - name: Cambiar el propietario del directorio de Tomcat
+      file:
+        path: /opt/tomcat
+        owner: tomcat
+        group: tomcat
+        mode: "u+rwx,g+rx,o=rx"
+        recurse: yes
+        state: directory
+
+      
+    - name: Cambiar el propietario del directorio de Tomcat
+      file:
+        path: /opt/tomcat
+        owner: tomcat
+        group: tomcat
+    
+    - name: Crear uin fichero de servicio
+      copy: 
+        content: |-
+          [Unit]
+          Description=Mi Servicio de TOMCAT
+          Requires=network.target
+          After=network.target
+          
+          [Service]
+          Type=forking
+          User=tomcat
+          Environment="CATALINA_PID=/opt/tomcat/logs/tomcat.pid"
+          Environment="CATALINA_BASE=/opt/tomcat"
+          Environment="CATALINA_HOME=/opt/tomcat"
+          Environment="CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC"
+          ExecStart=/opt/tomcat/bin/startup.sh
+          ExecStop=/opt/tomcat/bin/shutdown.sh
+          Restart=on-abnormal
+          
+          [Install]
+          WantedBy=multi-user.target
+        dest: /etc/systemd/system/tomcat.service
+
+    - name: Arrancar Tomcat
+      service:
+        name: tomcat
+        state: started
+        

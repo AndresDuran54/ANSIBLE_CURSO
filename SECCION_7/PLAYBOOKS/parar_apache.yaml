@@ -1,0 +1,4 @@
+- name: Parar Apache Debian
+  ansible.builtin.service:
+    name: service
+    state: stopped

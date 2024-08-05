@@ -1,0 +1,11 @@
+---
+- name: Crear usuarios con bucles
+  hosts: ubuntu1
+  vars_files: list_usu.yaml
+  tasks:
+    - name: Crear varios usuarios en el Sistema Operativo con un fichero externo
+      ansible.builtin.user:
+        name: "{{ item.name }}"
+        password: "{{ item.password }}"
+        state: present
+      loop: "{{ usuarios }}"

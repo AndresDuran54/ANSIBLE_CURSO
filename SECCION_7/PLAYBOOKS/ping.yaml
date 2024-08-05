@@ -1,0 +1,40 @@
+---
+- name: Primer play del curso
+  hosts: rocky
+
+  tasks:
+    - name: Hacer un ping
+      ansible.builtin.ping:
+    - name: Crear un fichero
+      ansible.builtin.shell: touch /tmp/fichero1.txt
+    
+- name: Instalar Nginx
+  hosts: ubuntu
+
+  tasks:
+    # - name: Parar Apache
+    #   ansible.builtin.service:
+    #     name: apache2
+    #     state: stopped
+    
+    - name: Parar Apache
+      include_tasks: parar_apache.yaml
+
+    # - name: Instalar Nginx
+    #   ansible.builtin.apt:
+    #     name: nginx
+    #     state: present
+    #     update_cache: true
+
+    # - name: Arrancar Nginx
+    #   ansible.builtin.service:
+    #     name: nginx
+    #     state: started
+
+    - name: Copiar index.html
+      ansible.builtin.copy:
+        src: ./index.html
+        dest: /var/www/html
+        owner: root
+        group: root
+        mode: '0644'

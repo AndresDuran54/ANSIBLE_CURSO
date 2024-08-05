@@ -1,0 +1,37 @@
+### VARIABLES
+
+### PRECENDENCIA
+# EN EL DEFAULT DEL ROLE
+# EN EL GROUPS_VAR
+# EN EL HOSTS_VAR
+# EN PLAYS
+# EN EL VARS DEL ROLE
+# DESDE LINEA DE COMANDOS
+
+---
+- name: Ejemplos de un role
+  hosts: ubuntu1
+  # roles:
+  #   - desarrollo
+  vars:
+    software: nginx
+    servicio: nginx
+
+  pre_tasks:
+    - name: Hacer un Upgrade
+      ansible.builtin.apt:
+        update_cache: true
+
+  tasks:
+    - name: Incluir tarea
+      ansible.builtin.include_role:
+        name: desarrollo
+
+    - name: Ultima tarea
+      ansible.builtin.debug:
+        msg: "Primero se ejecutan las tareas del role"
+
+  post_tasks:
+    - name: Informar finalización
+      ansible.builtin.debug:
+        msg: "Proceso terminado"

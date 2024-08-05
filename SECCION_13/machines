@@ -1,0 +1,24 @@
+[debian]
+
+[rocky]
+rocky[1:2]
+
+[ubuntu:vars]
+puerto=9090
+ansible_user=root
+
+[ubuntu]
+ubuntu1 puerto=9090 entorno=desarrollo ansible_user=root
+
+[servidores_de_datos]
+mysql1
+
+[servidores_de_aplicaciones]
+tomcat1
+
+[desarrollo:children]
+debian
+ubuntu
+
+[desarrollo:vars]
+ansible_user=juan

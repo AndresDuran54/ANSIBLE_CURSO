@@ -1,0 +1,11 @@
+---
+# handlers file for desarrollo
+- name: Copiar_script_sql
+  ansible.builtin.copy:
+    src: files/crear_db.sql
+    dest: /tmp/crear_db.sql
+    mode: "777"
+
+- name: Crear_db
+  ansible.builtin.shell:
+    cmd: mysql < /tmp/crear_db.sql

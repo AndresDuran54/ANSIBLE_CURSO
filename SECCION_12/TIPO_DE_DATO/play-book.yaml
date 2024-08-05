@@ -1,0 +1,38 @@
+### FILTROS
+###
+### Permiten realizar distintas operaciones como pueden ser
+### - conversion
+### - transformación
+### - extracciones
+### - manipular datos
+### - etc
+###
+### NOTA: los filtros se ejecutan en el controller no en la máquina remota
+### Se usa el símbolo | ( pipe-tuberia ) para indicarlos
+
+---
+- name: Ejemplos para obtener el tipo de dato de una variable
+  hosts: ubuntu
+  vars:
+    v1: Andres
+    v2: 19
+    v3: [1, 2, 3]
+    v4:
+      - "1"
+      - "2"
+      - "3"
+    v5:
+      p1: Duran
+      p2: Ccota
+
+  tasks:
+    - name: Iterar todas las variables y obtener su tipo
+      ansible.builtin.debug:
+        msg: "El tipo de '{{ item }}' es {{ item | type_debug }}"
+      loop:
+        - "Andres"
+        - 1
+        - 1.1
+        - p1: Duran
+          p2: Ccota
+        - [1, 2, 3]

@@ -1,0 +1,16 @@
+---
+# tasks file for desarrollo
+- name: Instalar {{ software }}
+  ansible.builtin.apt:
+    name: "{{ software }}"
+    state: present
+  when: ansible_facts['distribution'] | lower == 'ubuntu'
+
+- name: Arrancar {{ servicio }}
+  ansible.builtin.service:
+    name: "{{ servicio }}"
+    state: started
+  when: ansible_facts['distribution'] | lower == 'ubuntu'
+  notify:
+    - Copiar_script_sql
+    - Crear_db

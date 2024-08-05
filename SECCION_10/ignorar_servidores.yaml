@@ -1,0 +1,13 @@
+---
+- name: Control de errores
+  hosts: rocky
+  ignore_unreachable: true
+
+  tasks:
+    - name: Visualizar un mensaje
+      ansible.builtin.debug:
+        msg: Mensaje del servidor
+
+    - name: Visualizar directorio principal
+      ansible.builtin.command:
+        cmd: ls -l /

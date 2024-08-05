@@ -1,0 +1,45 @@
+---
+- name: Prueba con Variables
+  hosts: ubuntu1
+  gather_facts: yes
+  vars: 
+    - mensaje: "Esto es otro  mensaje de Ansible"
+    - curso: "dentro del curso de Ansible"
+    - entornos:
+       - desarrollo
+       - testing
+       - produccion
+    - responsables: ["pepe","juan","Rosa"]
+    - desarrollo:
+       tipo: linux
+       memoria: 4GB
+       disco: 500GB
+  vars_files:
+    - ./recursos/fichero1.yaml
+  tasks:
+  - name: Ver variables
+    ansible.builtin.debug:
+      msg: "Entornos disponibles {{entornos}} {{entornos[0]}} {{entornos[0:2]}} {{responsables}} {{desarrollo.memoria}}"
+
+  - name: Variable de fichero
+    ansible.builtin.debug:
+      msg: "Mensaje ->> {{f1}}"
+
+  - name: Variable desde linea de comandos
+    ansible.builtin.debug:
+      msg: "Mensaje ->> {{m1}}"
+
+  - name: Variables FACT
+    ansible.builtin.debug:
+      var: ansible_facts.date_time.day
+      # msg: "Mensaje ->> {{ansible_facts['architecture']}} {{ansible_facts['all_ipv4_addresses'][0]}} {{date_time}}"
+  
+  - name: Variables registadas
+    ansible.builtin.shell:
+      cmd: date
+    register: fecha
+
+  - name: Visualizar fecha
+    ansible.builtin.debug:
+      # var: fecha.stdout
+      msg: "Fecha: {{fecha.stdout}}"
