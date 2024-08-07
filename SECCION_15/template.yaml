@@ -1,0 +1,9 @@
+---
+  - name: Trabajar en JINJA2
+    hosts: ubuntu1
+
+    tasks:
+      - name: Preparar desarrollo
+        ansible.builtin.template:
+          src: template.j2
+          dest: /tmp/salida.txt
